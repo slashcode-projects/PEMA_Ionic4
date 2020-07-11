@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Credit Transactions
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+ 
+  <ion-segment [(ngModel)]="selectedView">
+    <ion-segment-button value="creditDetails">
+      <ion-label>Dashboard</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="creditTrans">
+      <ion-label>Transactions</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+ 
+  <div [ngSwitch]="selectedView">
+    <div *ngSwitchCase="'creditDetails'">
+      <ion-item>
+        <ion-label position="stacked">Bank Name</ion-label>
+        <ion-input [(ngModel)]="indCreditData.bankName" placeholder="Your Card Bank"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Card Name</ion-label>
+        <ion-input [(ngModel)]="indCreditData.cardName" placeholder="Your Card Name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Card Initial Limit</ion-label>
+        <ion-input [(ngModel)]="indCreditData.cardLimit" placeholder="Card Limit"></ion-input>
+      </ion-item>
+
+      <ion-button expand="block" (click)="addCardDetails()">Add Card</ion-button>
+ 
+      <ion-list>
+        <ion-item button *ngFor="let cd of creditsData" [routerLink]="['/', 'developers', cd.id]">
+          <ion-label class="ion-text-wrap">
+            <h2>{{ cd.bank_name }} {{ cd.card_name }} with Remaining Limit {{ cd.left_money }}</h2>
+            <p>Expensed Money :: {{ cd.expensed }}</p>
+            <p>Actual Limit :: {{ cd.card_limit }}</p>            
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+ 
+    <div *ngSwitchCase="'creditTrans'">
+      <ion-item>
+        <ion-label position="stacked">Transactions Details</ion-label>
+        <ion-input [(ngModel)]="indCreditTrans.transactionDetails" placeholder="Details"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Transactions Amount</ion-label>
+        <ion-input [(ngModel)]="indCreditTrans.amount" placeholder="Amount"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Transactions Date</ion-label>
+        <ion-input [(ngModel)]="indCreditTrans.dateOfTransaction" placeholder="Date for Transaction"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Select Card</ion-label>
+        <ion-select [(ngModel)]="indCreditTrans.cardId">
+          <ion-select-option *ngFor="let cd of creditsData" [value]="cd.id">{{ cd.bank_name }} {{ cd.card_name }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-button expand="block" (click)="addCreditTrans()">Add Transaction</ion-button>
+ 
+      <ion-list>
+        <ion-item *ngFor="let ct of creditTrans | async">
+          <ion-label class="ion-text-wrap">
+            <h2>Amount : {{ ct.amount }} from {{ ct.card_name }}</h2>
+            <p>Reason : {{ ct.transaction_details }} on {{ ct.date_of_transaction }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+ 
+</ion-content>

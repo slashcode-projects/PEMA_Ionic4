@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Reset Card Balance
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+    <ion-list>
+      <ion-item *ngFor="let cd of creditData | async">
+        <ion-label class="ion-text-wrap">
+          <h2>{{ cd.bank_name }} {{ cd.card_name }} with Remaining Limit {{ cd.left_money }}</h2>
+        </ion-label>
+        <ion-button expand="block" (click)="resetLimit(cd.id)">Reset Card</ion-button>
+      </ion-item>
+      </ion-list>
+</ion-content>
